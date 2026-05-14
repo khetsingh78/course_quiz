@@ -129,10 +129,10 @@ class CourseApiController extends Controller
 
             $exams = Category::where('type', 'main')->get();
             //fetch based on islocked
-            $course = Course::with(['category:id,name', 'quizzes' => function ($query) {
+            $course = Course::with(['category:id,name', 'quizzes'/*  => function ($query) {
                 $query->where('islocked', 1)
                     ->with('questions.options');
-            }])
+            } */])
                 ->where("price", ">", 1)
                 ->where('type', 'Test-Series')
                 ->when(
@@ -140,6 +140,16 @@ class CourseApiController extends Controller
                     fn($q) => $q->where('category_id', $request->category_id)
                 )
                 ->get();
+            $course->each(function ($courseItem) {
+                $courseItem->quizzes->each(function ($quiz) {
+                    $quiz->when(
+                        $quiz->islocked == 1,
+                        function ($q) use ($quiz) {
+                            $quiz->load('questions.options');
+                        }
+                    );
+                });
+            });
             return response()->json([
                 'success' => true,
                 'message' => 'All Test series successfully.',
