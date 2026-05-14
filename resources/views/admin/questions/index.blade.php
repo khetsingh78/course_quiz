@@ -301,7 +301,7 @@
                     <input type="text" name="quiz_id" value="{{ $quiz_id }}" hidden>
 
                     {{-- <button type="submit">Upload</button> --}}
-                    <a href="{{ asset('sample-files/question-upload.xlsx') }}" rel="noopener noreferrer">
+                    <a href="{{ asset('sample-files/question-upload.xlsx') }}" download rel="noopener noreferrer">
                         Download Sample File
                     </a>
                 </div>
