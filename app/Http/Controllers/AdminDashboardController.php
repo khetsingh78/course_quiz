@@ -8,6 +8,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+        dd('admin');
         return view('admin.dashboard');
     }
 }
