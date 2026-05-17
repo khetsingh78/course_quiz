@@ -129,10 +129,9 @@ class CourseApiController extends Controller
 
             $exams = Category::where('type', 'main')->get();
             //fetch based on islocked
-            $course = Course::with(['category:id,name', 'quizzes'/*  => function ($query) {
-                $query->where('islocked', 1)
-                    ->with('questions.options');
-            } */])
+            $course = Course::with(['category:id,name', 'quizzes' => function ($query) {
+                $query->withCount('questions');
+            }])
                 ->where("price", ">", 1)
                 ->where('type', 'Test-Series')
                 ->when(
