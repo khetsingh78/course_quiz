@@ -16,3 +16,7 @@ cd /home/u604935531/domains/traininginstitute.in/public_html
 </IfModule>
 
 ---------------------------------------------------------------------------------
+
+php artisan db:seed --class=SubscriptionPlanSeeder
+
+-----------------------------------------------

@@ -3,7 +3,9 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseApiController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PaymentSubscriptionController;
 use App\Http\Controllers\Api\QuizController;
+use App\Http\Controllers\Api\SubscriptionPlanController as ApiSubscriptionPlanController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -38,9 +40,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/save-quiz-attempt', [QuizController::class, 'saveQuizAttempt']);
     Route::post('/quiz-attempted-result', [QuizController::class, 'quizAttemptedResult']);
 
-
+    Route::get('/subscription-plan', [APISubscriptionPlanController::class, 'subscription_plan']);
 
     Route::post('/create-order', [PaymentController::class, 'createOrder']);
     Route::post('/verify-payment', [PaymentController::class, 'verifyPayment']);
     Route::post('/payment-failed', [PaymentController::class, 'paymentFailed']);
+
+    ///////////////////////payment route for subscription////////////////////////////////
+    Route::post('/subscription-create-order', [PaymentSubscriptionController::class, 'createOrder']);
+    Route::post('/subscription-verify-payment', [PaymentSubscriptionController::class, 'verifyPayment']);
+    Route::post('/subscription-payment-failed', [PaymentSubscriptionController::class, 'paymentFailed']);
 });
