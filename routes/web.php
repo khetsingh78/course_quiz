@@ -9,6 +9,16 @@ Route::get('/cacheclear', function () {
     return 'Cache Clear';
 });
 
+Route::get('/storage-link', function () {
+
+    $target = storage_path('app/public');
+    $link = public_path('storage');
+
+    symlink($target, $link);
+
+    return 'Storage linked successfully';
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
