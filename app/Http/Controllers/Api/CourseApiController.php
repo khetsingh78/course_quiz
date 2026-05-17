@@ -143,7 +143,7 @@ class CourseApiController extends Controller
             $course->each(function ($courseItem) {
                 $courseItem->quizzes->each(function ($quiz) {
                     $quiz->when(
-                        $quiz->islocked == 0,
+                        $quiz->islocked == 1,
                         function ($q) use ($quiz) {
                             $quiz->load('questions.options');
                         }
