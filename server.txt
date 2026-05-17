@@ -1,0 +1,18 @@
+--------------------Create link of image files and folder--------------------------- 
+
+ln -s /home/u604935531/domains/traininginstitute.in/public_html/storage/app/public /home/u604935531/domains/traininginstitute.in/public_html/public/storage
+
+-----------------server commands after connection stablishment---------------------
+
+find /home -name artisan
+cd /home/u604935531/domains/traininginstitute.in/public_html
+
+----------------------------to run project directally on domain then create new .htaccess file write code-----------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+---------------------------------------------------------------------------------
