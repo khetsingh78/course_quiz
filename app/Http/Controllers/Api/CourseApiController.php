@@ -285,6 +285,7 @@ class CourseApiController extends Controller
                                 $q->where('user_id', $user_id);
                             }
                         ]);
+                        $query->withCount('questions');
                     },
 
                 ])
@@ -363,8 +364,8 @@ class CourseApiController extends Controller
                                 $q->where('user_id', $user_id);
                             }
                         ]);
-                    },
-
+                        $query->withCount('questions');
+                    }
                 ])
                 ->where("price", "<", 1)
                 ->where('type', 'Test-Series')
