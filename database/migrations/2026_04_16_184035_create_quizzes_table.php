@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('sort_order')->default(0);
             $table->integer('total_marks')->default(0);
-            $table->integer('duration', 3)->comment('in minutes');
+            $table->integer('duration')
+                ->comment('in minutes');
             $table->boolean('status')->default(true);
             $table->boolean('islocked')->default(true);
             $table->timestamps();
