@@ -8,7 +8,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        // dd('admin test');
+        // dd('admin test') tast final test;
         return view('admin.dashboard');
     }
 }
