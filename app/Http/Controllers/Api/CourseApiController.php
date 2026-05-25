@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Order;
 use App\Models\SubjectTopicLecture;
+use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -139,16 +140,31 @@ class CourseApiController extends Controller
                     fn($q) => $q->where('category_id', $request->category_id)
                 )
                 ->get();
-            $course->each(function ($courseItem) {
-                $courseItem->quizzes->each(function ($quiz) {
-                    $quiz->when(
-                        $quiz->islocked == 0,
-                        function ($q) use ($quiz) {
-                            $quiz->load('questions.options');
-                        }
-                    );
+
+            $userId = auth()->id();
+            $hasSubscription = UserSubscription::where('user_id', $userId)
+                ->where('payment_status', 'paid')
+                ->exists();
+
+            if ($hasSubscription) {
+                $course->each(function ($courseItem) {
+                    $courseItem->quizzes->each(function ($quiz) {
+                        $quiz->load('questions.options');
+                    });
                 });
-            });
+            } else {
+                $course->each(function ($courseItem) {
+                    $courseItem->quizzes->each(function ($quiz) {
+                        $quiz->when(
+                            $quiz->islocked == 0,
+                            function ($q) use ($quiz) {
+                                $quiz->load('questions.options');
+                            }
+                        );
+                    });
+                });
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'All Test series successfully.',
@@ -212,14 +228,32 @@ class CourseApiController extends Controller
                 'topic_id' => 'required'
             ]);
 
-            $topics = SubjectTopicLecture::where('subject_topic_id', $request->topic_id)->get();
-            return response()->json([
-                'success' => true,
-                'message' => 'Lectures List.',
-                'data' => [
-                    "lectures" => $topics
-                ]
-            ]);
+            $userId = auth()->id();
+
+            $hasCourse = Order::where('user_id', $userId)
+                ->where('payment_status', 'paid')
+                ->exists();
+
+            $hasSubscription = UserSubscription::where('user_id', $userId)
+                ->where('payment_status', 'paid')
+                ->exists();
+
+            if ($hasCourse || $hasSubscription) {
+                $topics = SubjectTopicLecture::where('subject_topic_id', $request->topic_id)->get();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Lectures List.',
+                    'data' => [
+                        "lectures" => $topics
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Plan Not Found.',
+                    'data' => (object)[],
+                ]);
+            }
         } catch (ValidationException $e) {
             return response()->json(["success" => false, "message" => $e->validator->errors()->first(), "data" => (object)[]]);
         } catch (\Throwable $th) {
