@@ -15,7 +15,29 @@ class UserApiController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        try {
+
+            $user_id = auth()->user()->id;
+            $user = User::with('purchage.items','subscription.subscription_plan')->findOrFail($user_id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User Details.',
+                'data' => [
+                    "user" => $user
+                ]
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(["success" => false, "message" => $e->validator->errors()->first(), "data" => (object)[]]);
+        } catch (\Throwable $th) {
+            Log::info("user controller" . $th);
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+                'data' => (object)[],
+                'error' => $th->getMessage()
+            ]);
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/profile/update', [UserApiController::class, 'update']);
+    Route::get('/user', [UserApiController::class, 'index']);
 
     Route::post('/home', [CourseApiController::class, 'home']);
     Route::get('/exams', [CourseApiController::class, 'exams']);

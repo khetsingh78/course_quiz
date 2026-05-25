@@ -47,4 +47,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function purchage()
+    {
+        // return $this->belongsTo(Order::class, 'user_id', 'id');
+        return $this->hasOne(Order::class, 'user_id', 'id');
+    }
+
+    public function subscription()
+    {
+        // return $this->belongsTo(Order::class, 'user_id', 'id');
+        return $this->hasOne(UserSubscription::class, 'user_id', 'id');
+    }
 }
