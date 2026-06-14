@@ -22,6 +22,10 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
+            $table->foreignId('category_id')->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->string('order_number');
 
             $table->decimal('total_amount', 10, 2);

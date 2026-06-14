@@ -18,7 +18,8 @@ class PaymentSubscriptionController extends Controller
         try {
 
             $request->validate([
-                "subscription_id" => "required"
+                "subscription_id" => "required",
+                "category_id" => 'required'
             ]);
 
 
@@ -43,9 +44,11 @@ class PaymentSubscriptionController extends Controller
                 $final_amount = $subscription->price - $dis_amount;
             }
 
+            // add category id in subscription. to fetch course details based on the id.
             $subscription_order = UserSubscription::create([
                 "user_id" => $user_id,
                 "subscription_plan_id" => $subscription->id,
+                "category_id" => $request->category_id,
                 "order_number" => '0000',
                 "total_amount" => $total_amount,
                 "dis_amount" => $dis_amount,
