@@ -59,4 +59,6 @@ class User extends Authenticatable
         // return $this->belongsTo(Order::class, 'user_id', 'id');
         return $this->hasOne(UserSubscription::class, 'user_id', 'id')->latest();
     }
+
+  
 }

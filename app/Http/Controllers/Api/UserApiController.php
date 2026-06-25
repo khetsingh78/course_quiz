@@ -18,7 +18,7 @@ class UserApiController extends Controller
         try {
 
             $user_id = auth()->user()->id;
-            $user = User::with('purchage.items','subscription.subscription_plan')->findOrFail($user_id);
+            $user = User::with('purchage.items', 'subscription.subscription_plan', 'subscription.subscripton_exam')->findOrFail($user_id);
 
             return response()->json([
                 'success' => true,

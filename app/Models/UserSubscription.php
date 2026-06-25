@@ -18,4 +18,9 @@ class UserSubscription extends Model
     {
         return $this->belongsTo(SubscriptionPlan::class);
     }
+
+    public function subscripton_exam()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
